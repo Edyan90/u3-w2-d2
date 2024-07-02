@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { Container, Row, Form, Col, Alert } from "react-bootstrap";
 import SingleBook from "./SingleBook";
 import fantasy from "../data/books/fantasy.json";
@@ -8,24 +8,23 @@ import romance from "../data/books/romance.json";
 import scifi from "../data/books/scifi.json";
 import CommentArea from "./CommentArea";
 
-class BookList extends Component {
-  state = {
+const BookList = () => {
+  /* state = {
     categoria: fantasy,
-    formValue: {
-      searchForm: "",
-    },
+    searchForm: "",
     asin: "",
-  };
+  }; */
+  const [categoria, setCategoria] = useState(fantasy);
+  const [searchForm, setSearchForm] = useState("");
+  const [asin, setAsin] = useState("");
 
-  setAsin = (asin) => {
-    this.setState({ asin }); //cambio lo stato di Asin (lo si userà sull'onClick di SingleBook)
+  let setID = (asin) => {
+    setAsin(asin); //cambio lo stato di Asin (lo si userà sull'onClick di SingleBook)
   };
-  handleFormSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault(); // Previene il comportamento predefinito del submit
   };
-  render() {
-    const { categoria, formValue } = this.state; //destrutturazione degli oggetti così da non scrivere tutte quelle righe lunghe solo per prendere un valore
-    const { searchForm } = formValue;
+  {
     const filteredBooks = searchForm //Se questa è vera ovvero contiene un valore allora creami i libri filtrati altrimenti la categoria selezionata
       ? categoria.filter((libro) => libro.title.toLowerCase().includes(searchForm.toLowerCase()))
       : categoria;
@@ -35,19 +34,19 @@ class BookList extends Component {
           <h3>Scegli la tua categoria preferita:</h3>
         </div>
         <div className="d-flex justify-content-evenly">
-          <button className="btn btn-info me-5 mb-5" onClick={() => this.setState({ categoria: fantasy })}>
+          <button className="btn btn-info me-5 mb-5" onClick={() => setCategoria(fantasy)}>
             fantasy
           </button>
-          <button className="btn btn-info me-5 mb-5" onClick={() => this.setState({ categoria: history })}>
+          <button className="btn btn-info me-5 mb-5" onClick={() => setCategoria(history)}>
             history
           </button>
-          <button className="btn btn-info me-5 mb-5" onClick={() => this.setState({ categoria: horror })}>
+          <button className="btn btn-info me-5 mb-5" onClick={() => setCategoria(horror)}>
             horror
           </button>
-          <button className="btn btn-info me-5 mb-5" onClick={() => this.setState({ categoria: romance })}>
+          <button className="btn btn-info me-5 mb-5" onClick={() => setCategoria(romance)}>
             romance
           </button>
-          <button className="btn btn-info me-5 mb-5" onClick={() => this.setState({ categoria: scifi })}>
+          <button className="btn btn-info me-5 mb-5" onClick={() => setCategoria(scifi)}>
             scifi
           </button>
         </div>
@@ -57,15 +56,13 @@ class BookList extends Component {
             <Row>
               <Col xs="3">
                 <Form.Control
-                  onSubmit={this.handleFormSubmit}
+                  onSubmit={handleFormSubmit}
                   type="text"
                   placeholder="Search"
                   className=""
-                  value={this.state.formValue.searchForm}
+                  value={searchForm}
                   onChange={(evento) => {
-                    this.setState({
-                      formValue: { ...this.state.formValue, searchForm: evento.target.value },
-                    });
+                    setSearchForm(evento.target.value);
                   }}
                 />
               </Col>
@@ -79,13 +76,13 @@ class BookList extends Component {
               <Alert variant="danger"> Mi dispiace, titolo non trovato</Alert>
             ) : (
               filteredBooks.map((newLibro) => (
-                <SingleBook key={newLibro.asin} book={newLibro} setAsin={this.setAsin} selected={this.state.asin} /> //passo il metodo setAsin come props a SingleBook (vedi SingleBook)
+                <SingleBook key={newLibro.asin} book={newLibro} id={setID} selected={asin} /> //passo il metodo setAsin come props a SingleBook (vedi SingleBook)
               ))
             )}
           </Col>
           <Col className="col-4">
-            {this.state.asin ? (
-              <CommentArea asin={this.state.asin} />
+            {asin ? (
+              <CommentArea asin={asin} />
             ) : (
               <Alert className="ms-4" style={{ height: "300px" }}>
                 Clicca su una copertina per vedere i commenti
@@ -96,5 +93,5 @@ class BookList extends Component {
       </Container>
     );
   }
-}
+};
 export default BookList;

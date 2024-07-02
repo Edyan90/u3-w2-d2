@@ -1,8 +1,7 @@
-import { Component } from "react";
 import { Badge, Button, ListGroupItem } from "react-bootstrap";
 
-class SingleComment extends Component {
-  deleteComment = (commentID) => {
+const SingleComment = (props) => {
+  const deleteComment = (commentID) => {
     fetch("https://striveschool-api.herokuapp.com/api/comments/" + commentID, {
       method: "DELETE",
       headers: {
@@ -18,27 +17,22 @@ class SingleComment extends Component {
         }
       })
       .then((data) => {
-        this.props.ricarica(); //mi son passato la funzione/metodo da CommentArea così da poter aggiornare la lista di commenti senza avere quello eliminato
+        props.ricarica(); //mi son passato la funzione/metodo da CommentArea così da poter aggiornare la lista di commenti senza avere quello eliminato
       })
 
       .catch((err) => alert(err));
   };
 
-  render() {
-    return (
-      <ListGroupItem className="text-center" key={this.props.commenti._id} style={{ maxWidth: "350px" }}>
-        <h6>{this.props.commenti.author}</h6>
-        <p>{this.props.commenti.comment}</p>
-        <Badge>{this.props.commenti.rate}</Badge>
-        <Button
-          variant="danger"
-          className="d-block mx-auto mt-2"
-          onClick={() => this.deleteComment(this.props.commenti._id)}
-        >
-          Elimina Commento
-        </Button>
-      </ListGroupItem>
-    );
-  }
-}
+  return (
+    <ListGroupItem className="text-center" key={props.commenti._id} style={{ maxWidth: "350px" }}>
+      <h6>{props.commenti.author}</h6>
+      <p>{props.commenti.comment}</p>
+      <Badge>{props.commenti.rate}</Badge>
+      <Button variant="danger" className="d-block mx-auto mt-2" onClick={() => deleteComment(props.commenti._id)}>
+        Elimina Commento
+      </Button>
+    </ListGroupItem>
+  );
+};
+
 export default SingleComment;
