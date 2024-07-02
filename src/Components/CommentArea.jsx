@@ -40,7 +40,7 @@ const CommentArea = (props) => {
     fetchComments();
   }, [props.asin]);
   return (
-    <div>
+    <div className="sticky-top">
       <h6 className="mt-3">Inserisci il tuo feedback:</h6>
       <AddComments asin={props.asin} ricarica={fetchComments} />
       <h5>Comments:</h5>

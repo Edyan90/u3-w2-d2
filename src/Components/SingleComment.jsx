@@ -34,5 +34,4 @@ const SingleComment = (props) => {
     </ListGroupItem>
   );
 };
-
 export default SingleComment;

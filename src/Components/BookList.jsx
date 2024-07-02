@@ -84,7 +84,7 @@ const BookList = () => {
             {asin ? (
               <CommentArea asin={asin} />
             ) : (
-              <Alert className="ms-4" style={{ height: "300px" }}>
+              <Alert className="ms-4 sticky-top" style={{ height: "300px" }}>
                 Clicca su una copertina per vedere i commenti
               </Alert>
             )}
